@@ -1,0 +1,38 @@
+<body>
+    <h1>Todos</h1>
+    <select id="users">
+        <option value=""> Select a User</option>
+    </select>
+    <div id="results"></div>
+</body>
+<script>
+    const users = document.getElementById("users");
+    const results = document.getElementById("results");
+    const base = "http://localhost:8083/api/";
+    const usersEndpoint = base + "users";
+    const byUserEndpoint = base + "todos/byuser/"; //append user id
+
+    function onTodoData(todoList) {
+        results.innerHTML = "";
+        todoList.forEach(t=>{
+            const x = t.completed ? "X" : " ";
+            results.innerHTML += `[${x}] - ${t.description} <br>`
+        })
+    }
+
+    function onUserSelect() {
+        const id = users.selectedOptions[0].value;
+        fetch(byUserEndpoint + id).then(r => r.json()).then(onTodoData);
+    }
+
+    function onUserData(userList) {
+        userList.forEach(u => {
+            users.innerHTML += `<option value="${u.id}">${u.name}</option>`
+        })
+        users.addEventListener("click", onUserSelect)
+    }
+
+    fetch(usersEndpoint).then(r => r.json()).then(onUserData);
+
+
+</script>
