@@ -52,6 +52,7 @@
     }
     fetch(base + "categories").then(r => r.json()).then(onCategoryData);
 
+    // ADD/SAVE NEW TODO
     document.getElementById("add").addEventListener("click", e => {
         fetch(base + "todos", {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify( {
             description: document.getElementById("description").value,
