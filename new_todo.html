@@ -1,0 +1,69 @@
+<body>
+    <h1>New Todo</h1>
+    <label>
+        Description:
+        <textarea id="description"></textarea>
+    </label>
+    <label>
+        Owner (user):
+        <select id="users">
+            <option value="">Select a user</option>
+        </select>
+    </label>
+    <label>
+        Category:
+        <select id="category">
+            <option value="">Select a category</option>
+        </select>
+    </label>
+    <label>
+        Priority:
+        <select id="priority">
+            <option value="">Select a priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+    </label>
+    <label>
+        Deadline:
+        <input id="deadline" placeholder="YYYY-MM-DD">
+    </label>
+    <button id="add">Add</button>
+</body>
+<script>
+    const base = "http://localhost:8083/api/";
+
+    //USERS
+    const users = document.getElementById("users");
+    function onUserData(userList) {
+        userList.forEach(u => {
+            users.innerHTML += `<option value="${u.id}">${u.name}</option>`
+        })
+    }
+    fetch(base + "users").then(r => r.json()).then(onUserData);
+
+    //CATEGORIES
+    const category = document.getElementById("category");
+    function onCategoryData(categoryList) {
+        categoryList.forEach(u => {
+            category.innerHTML += `<option value="${u.name}">${u.name}</option>`
+        })
+    }
+    fetch(base + "categories").then(r => r.json()).then(onCategoryData);
+
+    document.getElementById("add").addEventListener("click", e => {
+        fetch(base + "todos", {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify( {
+            description: document.getElementById("description").value,
+            deadline: document.getElementById("deadline").value,
+            userid: document.getElementById("users").selectedOptions[0].value,
+            category: document.getElementById("category").selectedOptions[0].value,
+            priority: document.getElementById("priority").selectedOptions[0].value,
+        })})
+        .then(r=>r.json())
+        .then(j => {
+            console.log(j);
+            location = "todos.html";
+        })
+    });
+</script>
