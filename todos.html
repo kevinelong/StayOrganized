@@ -20,17 +20,28 @@
     <a href="new_user.html">Add User</a>
     
     <h1>Todos</h1>
+    <input id="filter" placeholder="type to filter users">
     <select id="users">
-        <option value=""> Select a User</option>
+        <!-- <option value=""> Select a User</option> -->
     </select>
     <div id="results"></div>
 </body>
 <script>
+    const filter = document.getElementById("filter");
     const users = document.getElementById("users");
     const results = document.getElementById("results");
     const base = "http://localhost:8083/api/";
     const usersEndpoint = base + "users";
     const byUserEndpoint = base + "todos/byuser/"; //append user id
+
+    filter.addEventListener("keyup",e=>{
+        [...users.children].forEach(c=>{
+            const needle = filter.value.toUpperCase();
+            const haystack = c.innerHTML.toUpperCase();
+            const isMatch = haystack.includes(needle);
+            c.style.display = isMatch ? "block" : "none";
+        });
+    });
 
     function onTodoData(todoList) {
         results.innerHTML = "";
@@ -58,6 +69,7 @@
     }
 
     function onUserData(userList) {
+        users.size = userList.length;
         userList.forEach(u => {
             users.innerHTML += `<option value="${u.id}">${u.name}</option>`
         })

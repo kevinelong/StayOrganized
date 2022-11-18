@@ -1,0 +1,23 @@
+<style>
+    span {
+        opacity: 0.25;
+        transition: opacity 5s;
+    }
+
+    span:hover {
+        opacity: 1;
+        transition: opacity 0s;
+    }
+</style>
+<body></body>
+<script>
+    for (row = 0; row < 11; row++) {
+        for (column = 0; column < 22; column++) {
+            let span = document.createElement("span");
+            span.innerHTML = "O";
+            document.body.appendChild(span);
+        }
+        let br = document.createElement("br");
+        document.body.appendChild(br);
+    }
+</script>
