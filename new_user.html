@@ -8,7 +8,7 @@
         </label><br><br>
         <label>
             Username:<br>
-            <input id="username">
+            <input id="username"><span id="exists">?</span>
         </label><br><br>
         <label>
             Password:<br>
@@ -31,6 +31,14 @@
     const password = document.getElementById("password");
     const passwordAgain = document.getElementById("passwordAgain");
     const message = document.getElementById("message");
+
+    const exists = document.getElementById("exists");
+
+    username.addEventListener("keyup", e=>{
+        fetch(base + "username_available/"+username.value).then(r => r.json()).then(result=>{
+            exists.innerHTML = "Available:" + result.available
+        });
+    });
 
     function clearMessage() {
         message.innerHTML = "";
